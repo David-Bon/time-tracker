@@ -1,15 +1,20 @@
 import React, {useState} from "react";
 import Input from "@material-ui/core/Input";
-import Button from "@material-ui/core/Button";
 
-const InputTracker = (props) => {
+const InputTracker = ({CreateNewTimer}) => {
     const [inputState, setInputState] = useState('')
-
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if(!inputState) {
+            return null
+        }
+        CreateNewTimer(inputState)
+        setInputState('')
+    }
     return (
-        <div>
-            <Input >Enter tracker name</Input>
-            <Button>Go</Button>
-        </div>
+        <form onSubmit={handleSubmit}>
+            <Input value={inputState} onChange={event => setInputState(event.target.value)}> </Input>
+        </form>
     )
 }
 

@@ -2,7 +2,7 @@ import TrackerItem from "../TrackerItem/TrackerItem";
 import React from "react";
 import {Grid} from "@material-ui/core";
 
-const TrackerList = (props) => {
+const TrackerList = ({timers, TogglePauseAction}) => {
     return (
         <Grid
             container item
@@ -11,9 +11,8 @@ const TrackerList = (props) => {
             direction="column-reverse"
         >
             {
-                props.timers.map((item) => {
-                    debugger
-return <TrackerItem timerData={item}/>
+                timers.map((item) => {
+                    return <TrackerItem TogglePauseAction={TogglePauseAction} timerData={item}/>
                 })
             }
         </Grid>
