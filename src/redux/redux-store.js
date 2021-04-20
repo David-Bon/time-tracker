@@ -1,9 +1,9 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import {Reducer1} from "./reducers";
+import {Reducer} from "./reducers";
 import thunk from "redux-thunk";
 
 const reducers = combineReducers({
-    Reducer1
+    Reducer
 })
 const persistedState =  localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : {};
 

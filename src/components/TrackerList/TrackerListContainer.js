@@ -1,23 +1,23 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import TrackerList from "./TrackerList";
-import {TogglePauseAction} from "../../redux/Actions";
+import {MemorizeClockState, TogglePauseAction} from "../../redux/Actions";
 
 
 class TrackerListContainer extends Component {
 
     render() {
-        const {timers, TogglePauseAction} = this.props
-        return <TrackerList TogglePauseAction={TogglePauseAction} timers={timers}/>
+        const {timers, TogglePauseAction, MemorizeClockState} = this.props
+        return <TrackerList TogglePauseAction={TogglePauseAction} MemorizeClockState={MemorizeClockState} timers={timers}/>
     }
 
 }
 const mapStateToProps = state => ({
-        timers: state.Reducer1.timers
+        timers: state.Reducer.timers
 })
 
 const mapDispatchToProps = {
-    TogglePauseAction
+    TogglePauseAction, MemorizeClockState
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrackerListContainer)

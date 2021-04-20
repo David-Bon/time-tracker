@@ -4,30 +4,44 @@ import Box from "@material-ui/core/Box";
 import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 
-const TrackerItem = ({timerData, TogglePauseAction}) => {
-    const [state, setState] = useState(0);
+const TrackerItem = ({timerData, TogglePauseAction, MemorizeClockState}) => {
+    const [state, setState] = useState({h: 0, m: 0, s: 0});
+    const digitCheck = x => x <= 10
+    let timerId
     const tick = () => {
-        //Діапазон від 1 до 1000
-        const nextSecond = 1000 - moment.now() % 1000;
-        setState(moment.now() - timerData.startedTime)
-        setTimeout(tick, nextSecond)
+        setState({...state, s: state.s + 1})
+        MemorizeClockState(timerData.id, state)
+    }
+    const TogglePause = () => {
+        TogglePauseAction(timerData.id)
+        clearTimeout(timerId)
     }
     useEffect(() => {
-            tick()
-        return () => {
-                clearTimeout(tick)
+        if(!timerData.paused){
+            timerId = setTimeout(tick, 1000)
         }
-    }, [])
+        if (state.s === 60) {
+            setState({...state, s: state.s = 0})
+            setState({...state, m: state.m += 1})
+        }
+        if (state.m === 60) {
+            setState({...state, m: state.m = 0})
+            setState({...state, h: state.h += 1})
+        }
+    }, [state.s, timerData.paused])
+
     return (
         <Box
             direction="column-reverse"
         >
             <span>{timerData.name}</span>
-            <span>{moment(state).format('HH:mm:ss')}</span>
+            <span>{digitCheck(state.h) ? <span>0{timerData.clockVal.h}</span> : timerData.clockVal.h}:</span>
+            <span>{digitCheck(state.m) ? <span>0{timerData.clockVal.m}</span> : timerData.clockVal.m}:</span>
+            <span>{digitCheck(state.s) ? <span>0{timerData.clockVal.s}</span> : timerData.clockVal.s}</span>
             {timerData.paused ? <PlayCircleOutlineIcon fontSize="large"
-                                                       onClick={() => TogglePauseAction(timerData.id)}> </PlayCircleOutlineIcon> :
+                                                       onClick={() => TogglePause()}> </PlayCircleOutlineIcon> :
                 <PauseCircleOutlineIcon fontSize="large"
-                                        onClick={() => TogglePauseAction(timerData.id)}> </PauseCircleOutlineIcon>}
+                                        onClick={() => TogglePause()}> </PauseCircleOutlineIcon>}
         </Box>
     )
 }
